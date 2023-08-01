@@ -1,8 +1,11 @@
+import Header from "./components/Header";
+import KanbanBody from "./components/KanbanBody";
 
 const App = () => {
   return (
     <div>
-      <h1 className="text-4xl text-cyan-400">Hello code rex kanban</h1>
+      <Header />
+      <KanbanBody />
     </div>
   );
 };

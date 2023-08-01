@@ -1,4 +1,4 @@
-import React from 'react';
+
 import logo from "../assets/coderex-logo.png"
 
 const Header = () => {

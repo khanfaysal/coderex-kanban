@@ -20,4 +20,12 @@
     }
 }
 
+@layer components {
+  .form-button {
+      @apply w-full bg-[#112873] text-white text-lg font-bold px-4 py-2 rounded-sm hover:opacity-75
+  }
+}
+
+
+
 

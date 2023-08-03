@@ -18,8 +18,8 @@ const Header = () => {
                <div className='flex items-center space-x-5 md:space-x-6'>
                     <button onClick={() => setIsOpenModal(true)} className='button hidden md:block'>Add Task</button>
                     <button className='button py-1 px-3 md:hidden'>+</button>
-                    {isOpenModal && <TaskModal closeModal={setIsOpenModal} />}
                </div>
+               {isOpenModal && <TaskModal closeModal={setIsOpenModal} />}
             </header>
         </div>
     );

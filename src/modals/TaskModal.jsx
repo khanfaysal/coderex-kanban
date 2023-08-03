@@ -1,21 +1,24 @@
-// src/modals/TaskModal.js
-
 import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const TaskModal = ({ closeModal }) => {
   const [task, setTask] = useState("");
+  const [description, setDescription] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can handle the form submission here, e.g., save the task or perform any other action
     console.log("Task submitted:", task);
+    console.log("Description:", description);
+    console.log("Due Date:", selectedDate);
     closeModal(false);
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex justify-center items-center bg-[#abd6db] bg-opacity-30">
       <div className="relative bg-white p-8 rounded shadow-lg">
-        <h1 className="text-2xl font-bold mb-4">Add task</h1>
+        <h1 className="text-2xl font-bold mb-4">Add New Task</h1>
         <button
           onClick={() => closeModal(false)}
           className="absolute top-0 right-0 mt-2 mr-2 text-red-600 font-bold text-xl"
@@ -25,22 +28,43 @@ const TaskModal = ({ closeModal }) => {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="task" className="block font-bold mb-2">
-              Task:
+              Title:
             </label>
             <input
               type="text"
               id="task"
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border border-blue-300"
               value={task}
               onChange={(e) => setTask(e.target.value)}
-              placeholder="Enter your task"
+              placeholder="Enter title"
             />
           </div>
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring"
-          >
-            Submit
+          <div className="mb-4">
+            <label htmlFor="description" className="block font-bold mb-2">
+              Task Description:
+            </label>
+            <textarea
+              id="description"
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter task description"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="date" className="block font-bold mb-2">
+              Due Date:
+            </label>
+            <DatePicker
+              id="date"
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              placeholderText="(e.g., 8/29/2023)"
+            />
+          </div>
+          <button type="submit" className="form-button">
+            Create Task
           </button>
         </form>
       </div>

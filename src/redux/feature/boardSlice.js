@@ -9,13 +9,15 @@ export const boardSlice = createSlice({
     initialState,
     reducers: {
         addTask: (state, action) => {
-            const { title, description, status, duedate } =
+            const { id, title, description, duedate } =
               action.payload;
-            const newTask = { title, description, status, duedate };
-
+            const newTask = {id, title, description, duedate };
             state.board[0].columns[0].tasks.push(newTask)
-            
           },
+
+        // removeTask: (state, action) => {
+        //   // const 
+        // }  
 
         
     }

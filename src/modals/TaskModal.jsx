@@ -4,6 +4,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addTask } from "../redux/feature/boardSlice";
 
+// for unique id
+export const CreateUID = (data) => {
+  let ID = 0;
+  if(!data.length) {
+    return ID + 1;
+  }
+
+  for(let i =0; i < data.length; i++) {
+    if(ID < data[i].id) {
+      ID = data[i].id;
+    }
+  }
+  return ID + 1; 
+}
+
 const TaskModal = ({ closeModal }) => {
 
    // redux store
@@ -16,14 +31,18 @@ const TaskModal = ({ closeModal }) => {
   const [description, setDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
 
+  const prevTasks = board[0].columns[0].tasks;
+  console.log(prevTasks, "prevtasks show")
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newTask = {title: task, description, dueDate: selectedDate}
+    const newTask = {id: CreateUID(prevTasks), title: task, description, duedate: selectedDate}
+    console.log(newTask)
     dispatch(addTask(newTask))
-    console.log("Task submitted:", task);
-    console.log("Description:", description);
-    console.log("Due Date:", selectedDate);
+    // console.log("Task submitted:", task);
+    // console.log("Description:", description);
+    // console.log("Due Date:", selectedDate);
     closeModal(false);
 
     alert("Task created successfully!");
@@ -71,13 +90,14 @@ const TaskModal = ({ closeModal }) => {
               Due Date:
             </label>
             <div className="w-full">
-              <DatePicker
+              <input
                 id="date"
-                wrapperClassName="w-full"
+                type= "date"
                 className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
                 selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
-                placeholderText="(e.g., 8/29/2023)"
+                onChange={(e) => {
+                  setSelectedDate(e.target.value)
+                }}
               />
             </div>
           </div>

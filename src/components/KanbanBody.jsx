@@ -30,7 +30,7 @@ const KanbanBody = () => {
 
   return (
     <section className="container section-gap-margin">
-      {isOpenModal && <TaskUpdatedModal closeModal={setIsOpenModal} defaultValues={board[0].columns[0].tasks.filter(task => task.id === selectedTask)}/>}
+      {isOpenModal && <TaskUpdatedModal closeModal={setIsOpenModal} selectedTask={selectedTask}/>}
       <h1 className="text-xl lg:text-3xl xl:text-5xl font-black my-10 text-center">
         CodeRex Kanban
       </h1>

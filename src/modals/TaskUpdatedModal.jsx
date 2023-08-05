@@ -18,17 +18,20 @@ export const CreateUID = (data) => {
   return ID + 1; 
 }
 
-const TaskUpdatedModal = ({ closeModal, defaultvalues }) => {
+const TaskUpdatedModal = ({ closeModal, selectedTask}) => {
 
    // redux store
    const {board} = useSelector(state => state.board);
    // dispatch function
 
-   const dispatch = useDispatch()
+   const dispatch = useDispatch();
 
-  const [task, setTask] = useState(defaultvalues ? defaultvalues.task : "");
-  const [description, setDescription] = useState(defaultvalues ? defaultvalues.description : "");
-  const [selectedDate, setSelectedDate] = useState(defaultvalues ? defaultvalues.duedate : null);
+   const defaultValues = board[0].columns[0].tasks.filter((task) => task.id === selectedTask);
+   console.log(defaultValues)
+
+  const [task, setTask] = useState(defaultValues ? defaultValues.task : "");
+  const [description, setDescription] = useState(defaultValues ? defaultValues.description : "");
+  const [selectedDate, setSelectedDate] = useState(defaultValues ? defaultValues.duedate : null);
 
   const prevTasks = board[0].columns[0].tasks;
   console.log(prevTasks, "prevtasks show")

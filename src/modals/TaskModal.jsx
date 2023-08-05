@@ -18,7 +18,7 @@ export const CreateUID = (data) => {
   return ID + 1; 
 }
 
-const TaskModal = ({ closeModal }) => {
+const TaskModal = ({ closeModal}) => {
 
    // redux store
    const {board} = useSelector(state => state.board);

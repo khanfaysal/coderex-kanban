@@ -28,6 +28,11 @@ const KanbanBody = () => {
   };
   console.log(board);
 
+  const handleOnDrag = (e) => {
+    console.log(e)
+
+  }
+
   return (
     <section className="container section-gap-margin">
       {isOpenModal && <TaskUpdatedModal closeModal={setIsOpenModal} selectedTask={selectedTask}/>}
@@ -57,6 +62,8 @@ const KanbanBody = () => {
                           <div
                             key={id}
                             className="relative p-3 border hover:shadow-xl gap-4 rounded-md"
+                            draggable
+                            onDragStart={(e) => handleOnDrag(e,id)}
                           >
                             <div className="absolute top-0 right-0 m-2 flex items-center gap-2">
 

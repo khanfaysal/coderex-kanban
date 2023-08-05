@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask } from "../redux/feature/boardSlice";
+
 
 // for unique id
 export const CreateUID = (data) => {
@@ -18,7 +18,7 @@ export const CreateUID = (data) => {
   return ID + 1; 
 }
 
-const TaskModal = ({ closeModal }) => {
+const TaskUpdatedModal = ({ closeModal, defaultvalues }) => {
 
    // redux store
    const {board} = useSelector(state => state.board);
@@ -26,9 +26,9 @@ const TaskModal = ({ closeModal }) => {
 
    const dispatch = useDispatch()
 
-  const [task, setTask] = useState("");
-  const [description, setDescription] = useState("");
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [task, setTask] = useState(defaultvalues ? defaultvalues.task : "");
+  const [description, setDescription] = useState(defaultvalues ? defaultvalues.description : "");
+  const [selectedDate, setSelectedDate] = useState(defaultvalues ? defaultvalues.duedate : null);
 
   const prevTasks = board[0].columns[0].tasks;
   console.log(prevTasks, "prevtasks show")
@@ -36,13 +36,10 @@ const TaskModal = ({ closeModal }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newTask = {id: CreateUID(prevTasks), title: task, description, duedate: selectedDate}
-    console.log(newTask)
-    dispatch(addTask(newTask))
-    // console.log("Task submitted:", task);
-    // console.log("Description:", description);
-    // console.log("Due Date:", selectedDate);
-    closeModal(false);
+    // const newTask = {id: CreateUID(prevTasks), title: task, description, duedate: selectedDate}
+    // console.log(newTask)
+    // dispatch(addTask(newTask))
+    // closeModal(false);
 
     alert("Task created successfully!");
   };
@@ -67,8 +64,8 @@ const TaskModal = ({ closeModal }) => {
               type="text"
               id="task"
               className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-              value={task}
               onChange={(e) => setTask(e.target.value)}
+              defaultValue={task}
               placeholder="Enter title"
             />
           </div>
@@ -79,7 +76,7 @@ const TaskModal = ({ closeModal }) => {
             <textarea
               id="description"
               className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300 h-32"
-              value={description}
+              defaultValue={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter task description"
             />
@@ -97,6 +94,7 @@ const TaskModal = ({ closeModal }) => {
                 onChange={(e) => {
                   setSelectedDate(e.target.value)
                 }}
+                defaultValue={selectedDate}
               />
             </div>
           </div>
@@ -110,4 +108,4 @@ const TaskModal = ({ closeModal }) => {
   );
 };
 
-export default TaskModal;
+export default TaskUpdatedModal;

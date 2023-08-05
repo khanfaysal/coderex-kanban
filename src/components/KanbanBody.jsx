@@ -1,33 +1,45 @@
-
 import { useDispatch, useSelector } from "react-redux";
 import { removeTask } from "../redux/feature/boardSlice";
+import { PencilIcon, X } from "lucide-react";
+import { useState } from "react";
+import TaskUpdatedModal from "../modals/TaskUpdatedModal";
+
 const KanbanBody = () => {
   const { board } = useSelector((state) => state.board);
 
   const dispatch = useDispatch();
 
-  const removeHandler = (id) => {
-    const prevTasks = [...board[0].columns[0].tasks];
-    const tasks = [...prevTasks.filter(task => task.id !== id)];
-    console.log(tasks, "filted")
-    dispatch(removeTask({tasks}));
-  }
-  console.log(board);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [selectedTask, setSelectedTask ] = useState(null)
 
+// remove task function
+  const removeTaskHandler = (id) => {
+    const prevTasks = [...board[0].columns[0].tasks];
+    const tasks = [...prevTasks.filter((task) => task.id !== id)];
+    console.log(tasks, "filted");
+    dispatch(removeTask({ tasks }));
+  };
+
+//  update task function 
+  const updateTaskHandler = (id) => {
+    setSelectedTask(id)
+    setIsOpenModal(true);
+  
+  };
+  console.log(board);
 
   return (
     <section className="container section-gap-margin">
+      {isOpenModal && <TaskUpdatedModal closeModal={setIsOpenModal} defaultValues={board[0].columns[0].tasks.filter(task => task.id === selectedTask)}/>}
       <h1 className="text-xl lg:text-3xl xl:text-5xl font-black my-10 text-center">
         CodeRex Kanban
       </h1>
       <hr />
 
       <div className="py-10">
-
         {board ? (
           <div className="grid grid-cols-3 gap-5">
-
-            { board[0].columns.map((column) => {
+            {board[0].columns.map((column) => {
               const { name, tasks } = column;
 
               return (
@@ -39,15 +51,26 @@ const KanbanBody = () => {
                   {tasks.length ? (
                     <div className="grid grid-cols-1 gap-3">
                       {tasks.map((task) => {
-                        const {id, title, description, duedate } = task;
+                        const { id, title, description, duedate } = task;
 
                         return (
                           <div
                             key={id}
                             className="relative p-3 border hover:shadow-xl gap-4 rounded-md"
                           >
-                            <span onClick={() => removeHandler(id)} className="absolute top-0 right-0 m-2 p-1 rounded-full text-white bg-red-400 hover:bg-red-600">x</span>
-                            <span className="absolute text-3xl text-gray top-0 left-0 ">{id}</span>
+                            <div className="absolute top-0 right-0 m-2 flex items-center gap-2">
+
+                                <PencilIcon onClick={() => updateTaskHandler(id)} className="w-6 h-6 px-1 rounded-full text-white bg-red-300 hover:bg-red-500 cursor-pointer"/>
+                              <X
+                                onClick={() => removeTaskHandler(id)}
+                                className="w-6 h-6 px-1 rounded-full text-white bg-red-300 hover:bg-red-500 cursor-pointer"
+                              />
+
+                            </div>
+                            <span className="absolute text-3xl text-gray top-0 left-0 ">
+                              {id}
+                            </span>
+
                             <h5 className="font-semibold">{title}</h5>
                             <p className="text-sm text-gray-400">
                               {description}
@@ -60,16 +83,13 @@ const KanbanBody = () => {
                   ) : (
                     "Add Task"
                   )}
-
                 </div>
               );
             })}
-
           </div>
         ) : (
           "no board found!"
         )}
-
       </div>
     </section>
   );

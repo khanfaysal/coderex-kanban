@@ -9,9 +9,9 @@ export const boardSlice = createSlice({
     initialState,
     reducers: {
         addTask: (state, action) => {
-            const { id, title, description, duedate } =
+            const { id, title, description, duedate, status } =
               action.payload;
-            const newTask = {id, title, description, duedate };
+            const newTask = {id, title, status, description, duedate };
             state.board[0].columns[0].tasks.push(newTask)
           },
 
@@ -19,12 +19,16 @@ export const boardSlice = createSlice({
           const {tasks} = action.payload;
           console.log(tasks, "tasks")
           state.board[0].columns[0].tasks = tasks;
-        }  
+        },  
 
-        
+        updateTask: (state, action) => {
+          const {tasks} = action.payload;
+          console.log(tasks, "tasks")
+          state.board[0].columns[0].tasks = tasks;
+        },
     }
 })
 
-export const {addTask, removeTask} = boardSlice.actions;
+export const {addTask, removeTask, updateTask} = boardSlice.actions;
 
 export default boardSlice.reducer;

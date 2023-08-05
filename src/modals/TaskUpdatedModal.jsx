@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
+import { updateTask } from "../redux/feature/boardSlice";
 
 
 // for unique id
@@ -26,25 +27,35 @@ const TaskUpdatedModal = ({ closeModal, selectedTask}) => {
 
    const dispatch = useDispatch();
 
-   const defaultValues = board[0].columns[0].tasks.filter((task) => task.id === selectedTask);
-   console.log(defaultValues)
+   const defaultValues = board[0].columns[0].tasks.filter((task) => task.id === selectedTask)[0];
+   console.log(defaultValues, "default values")
 
-  const [task, setTask] = useState(defaultValues ? defaultValues.task : "");
+  const [task, setTask] = useState(defaultValues ? defaultValues.title : "");
   const [description, setDescription] = useState(defaultValues ? defaultValues.description : "");
   const [selectedDate, setSelectedDate] = useState(defaultValues ? defaultValues.duedate : null);
 
-  const prevTasks = board[0].columns[0].tasks;
-  console.log(prevTasks, "prevtasks show")
+  // const prevTasks = board[0].columns[0].tasks;
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // const newTask = {id: CreateUID(prevTasks), title: task, description, duedate: selectedDate}
-    // console.log(newTask)
-    // dispatch(addTask(newTask))
-    // closeModal(false);
+    const prevTasks = board[0].columns[0].tasks;
+    const newTask = {...defaultValues, title: task, description, duedate: selectedDate};
+    console.log(newTask, "newTask.........")
+    const newTaskList = prevTasks.map(task => {
+      if(task.id === selectedTask) {
+        return newTask
+      }else {
+        return task;
+      }
+    })
+    console.log(newTaskList, "new list tasks......")
+    dispatch(updateTask({
+      tasks: newTaskList
+    }))
+    closeModal(false);
 
-    alert("Task created successfully!");
+    alert("Task updated");
   };
 
   return (
@@ -102,7 +113,7 @@ const TaskUpdatedModal = ({ closeModal, selectedTask}) => {
             </div>
           </div>
           <button type="submit" className="form-button">
-            Create Task
+            Update Task
           </button>
         </form>
         

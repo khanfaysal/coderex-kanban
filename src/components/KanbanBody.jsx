@@ -51,7 +51,7 @@ const KanbanBody = () => {
                   {tasks.length ? (
                     <div className="grid grid-cols-1 gap-3">
                       {tasks.map((task) => {
-                        const { id, title, description, duedate } = task;
+                        const { id, title, description, duedate, status } = task;
 
                         return (
                           <div
@@ -75,6 +75,7 @@ const KanbanBody = () => {
                             <p className="text-sm text-gray-400">
                               {description}
                             </p>
+                            <p>{status}</p>
                             <p>Due:{duedate}</p>
                           </div>
                         );

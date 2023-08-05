@@ -31,17 +31,13 @@ const TaskModal = ({ closeModal}) => {
   const [selectedDate, setSelectedDate] = useState(null);
 
   const prevTasks = board[0].columns[0].tasks;
-  console.log(prevTasks, "prevtasks show")
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const newTask = {id: CreateUID(prevTasks), title: task, description, duedate: selectedDate}
-    console.log(newTask)
     dispatch(addTask(newTask))
-    // console.log("Task submitted:", task);
-    // console.log("Description:", description);
-    // console.log("Due Date:", selectedDate);
     closeModal(false);
 
     alert("Task created successfully!");

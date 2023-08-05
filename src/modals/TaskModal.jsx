@@ -1,14 +1,26 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useDispatch, useSelector } from "react-redux";
+import { addTask } from "../redux/feature/boardSlice";
 
 const TaskModal = ({ closeModal }) => {
+
+   // redux store
+   const {board} = useSelector(state => state.board);
+   // dispatch function
+
+   const dispatch = useDispatch()
+
   const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const newTask = {title: task, description, dueDate: selectedDate}
+    dispatch(addTask(newTask))
     console.log("Task submitted:", task);
     console.log("Description:", description);
     console.log("Due Date:", selectedDate);

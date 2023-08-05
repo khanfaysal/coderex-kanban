@@ -9,12 +9,12 @@ export const boardSlice = createSlice({
     initialState,
     reducers: {
         addTask: (state, action) => {
-            const { title, description, status, duedate, newColIndex } =
+            const { title, description, status, duedate } =
               action.payload;
-            const task = { title, description, status, duedate,newColIndex };
-            // const board = state.find((board) => board.isActive);
-            // const column = board.columns.find((col, index) => index === newColIndex);
-            // column.tasks.push(task);
+            const newTask = { title, description, status, duedate };
+
+            state.board[0].columns[0].tasks.push(newTask)
+            
           },
 
         

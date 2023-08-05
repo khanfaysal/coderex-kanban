@@ -3,6 +3,7 @@ import {useSelector} from "react-redux"
 const KanbanBody = () => {
 
     const { board } = useSelector(state => state.board);
+    console.log(board)
     const taskId = useId();
     const columnId = useId();
     

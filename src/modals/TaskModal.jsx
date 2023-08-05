@@ -13,18 +13,21 @@ const TaskModal = ({ closeModal }) => {
     console.log("Description:", description);
     console.log("Due Date:", selectedDate);
     closeModal(false);
+
+    alert("Task created successfully!");
   };
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-[#abd6db] bg-opacity-30">
-      <div className="relative bg-white p-8 rounded shadow-lg">
-        <h1 className="text-2xl font-bold mb-4">Add New Task</h1>
+      <div className="relative bg-white p-6 rounded-lg shadow-lg w-72 h-auto">
+        <h1 className="text-2xl font-bold mb-3">Add New Task</h1>
         <button
           onClick={() => closeModal(false)}
           className="absolute top-0 right-0 mt-2 mr-2 text-red-600 font-bold text-xl"
         >
           &times;
         </button>
+
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="task" className="block font-bold mb-2">
@@ -33,7 +36,7 @@ const TaskModal = ({ closeModal }) => {
             <input
               type="text"
               id="task"
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border border-blue-300"
+              className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
               value={task}
               onChange={(e) => setTask(e.target.value)}
               placeholder="Enter title"
@@ -45,7 +48,7 @@ const TaskModal = ({ closeModal }) => {
             </label>
             <textarea
               id="description"
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+              className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300 h-32"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter task description"
@@ -55,18 +58,22 @@ const TaskModal = ({ closeModal }) => {
             <label htmlFor="date" className="block font-bold mb-2">
               Due Date:
             </label>
-            <DatePicker
-              id="date"
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              placeholderText="(e.g., 8/29/2023)"
-            />
+            <div className="w-full">
+              <DatePicker
+                id="date"
+                wrapperClassName="w-full"
+                className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                placeholderText="(e.g., 8/29/2023)"
+              />
+            </div>
           </div>
           <button type="submit" className="form-button">
             Create Task
           </button>
         </form>
+        
       </div>
     </div>
   );

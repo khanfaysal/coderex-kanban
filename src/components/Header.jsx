@@ -8,8 +8,8 @@ import TaskModal from "../modals/TaskModal";
 const Header = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);
     return (
-        <div className='fixed z-50 right-0 left-0 bg-[#abd6db] p-4'>
-            <header className='flex justify-between items-center'>
+        <header className='sticky z-50 top-0 bg-[#abd6db] p-4'>
+            <nav className='container flex justify-between items-center'>
                 {/* left part*/}
                <div>
                     <img src={logo} alt="coderex logo" />
@@ -20,8 +20,8 @@ const Header = () => {
                     <button className='button py-1 px-3 md:hidden'>+</button>
                </div>
                {isOpenModal && <TaskModal closeModal={setIsOpenModal} />}
-            </header>
-        </div>
+            </nav>
+        </header>
     );
 };
 

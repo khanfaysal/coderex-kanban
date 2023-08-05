@@ -3,10 +3,12 @@ import KanbanBody from "./components/KanbanBody";
 
 const App = () => {
   return (
-    <div>
-      <Header />
-      <KanbanBody />
-    </div>
+    <>
+      <div className="">
+        <Header />
+        <KanbanBody />
+      </div> 
+    </>
   );
 };
 

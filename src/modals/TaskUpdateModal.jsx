@@ -4,64 +4,51 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateTask } from "../redux/feature/boardSlice";
 
 
-// for unique id
-export const CreateUID = (data) => {
-  let ID = 0;
-  if(!data.length) {
-    return ID + 1;
-  }
-
-  for(let i =0; i < data.length; i++) {
-    if(ID < data[i].id) {
-      ID = data[i].id;
-    }
-  }
-  return ID + 1; 
-}
-
-const TaskUpdatedModal = ({ closeModal, selectedTask}) => {
-
-   // redux store
-   const {board} = useSelector(state => state.board);
-   // dispatch function
-
-   const dispatch = useDispatch();
-
-   const defaultValues = board[0].columns[0].tasks.filter((task) => task.id === selectedTask)[0];
-   console.log(defaultValues, "default values")
+const TaskUpdateModal = ({ closeModal, selectedTask, updateContext }) => {
+  // redux store
+  const { board } = useSelector((state) => state.board);
+  const dispatch = useDispatch();
+  const defaultValues = board[0].columns[updateContext.index].tasks.filter(
+    (task) => task.id === selectedTask
+  )[0];
 
   const [task, setTask] = useState(defaultValues ? defaultValues.title : "");
-  const [description, setDescription] = useState(defaultValues ? defaultValues.description : "");
-  const [selectedDate, setSelectedDate] = useState(defaultValues ? defaultValues.duedate : null);
-
-  // const prevTasks = board[0].columns[0].tasks;
+  const [description, setDescription] = useState(
+    defaultValues ? defaultValues.description : ""
+  );
+  const [selectedDate, setSelectedDate] = useState(
+    defaultValues ? defaultValues.duedate : ""
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const prevTasks = board[0].columns[0].tasks;
-    const newTask = {...defaultValues, title: task, description, duedate: selectedDate};
-    console.log(newTask, "newTask.........")
+    const prevTasks = board[0].columns[updateContext.index].tasks;
+    console.log(prevTasks)
+    const newTask = {
+      ...defaultValues,
+      title: task,
+      description,
+      duedate: selectedDate,
+    };
     const newTaskList = prevTasks.map(task => {
-      if(task.id === selectedTask) {
-        return newTask
-      }else {
-        return task;
-      }
+        if(task.id === selectedTask){
+            return newTask
+        }else{
+            return task
+        }
     })
-    console.log(newTaskList, "new list tasks......")
+    console.log(newTaskList)
     dispatch(updateTask({
-      tasks: newTaskList
-    }))
+        tasks: newTaskList,
+        index: updateContext.index
+    }));
     closeModal(false);
-
-    alert("Task updated");
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-[#abd6db] bg-opacity-30">
+    <div className="fixed inset-0 flex justify-center items-center bg-[#abd6db] bg-opacity-30 z-10">
       <div className="relative bg-white p-6 rounded-lg shadow-lg w-72 h-auto">
-        <h1 className="text-2xl font-bold mb-3">Add New Task</h1>
+        <h1 className="text-2xl font-bold mb-3">Update</h1>
         <button
           onClick={() => closeModal(false)}
           className="absolute top-0 right-0 mt-2 mr-2 text-red-600 font-bold text-xl"
@@ -79,8 +66,8 @@ const TaskUpdatedModal = ({ closeModal, selectedTask}) => {
               id="task"
               className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
               onChange={(e) => setTask(e.target.value)}
-              defaultValue={task}
               placeholder="Enter title"
+              defaultValue={task}
             />
           </div>
           <div className="mb-4">
@@ -102,24 +89,23 @@ const TaskUpdatedModal = ({ closeModal, selectedTask}) => {
             <div className="w-full">
               <input
                 id="date"
-                type= "date"
+                type="date"
                 className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
                 selected={selectedDate}
                 onChange={(e) => {
-                  setSelectedDate(e.target.value)
+                  setSelectedDate(e.target.value);
                 }}
                 defaultValue={selectedDate}
               />
             </div>
           </div>
           <button type="submit" className="form-button">
-            Update Task
+            Update
           </button>
         </form>
-        
       </div>
     </div>
   );
 };
 
-export default TaskUpdatedModal;
+export default TaskUpdateModal;

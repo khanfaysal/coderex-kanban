@@ -1,50 +1,49 @@
 import { useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addTask } from "../redux/feature/boardSlice";
 
-// for unique id
+// unique id generator function
 export const CreateUID = (data) => {
   let ID = 0;
-  if(!data.length) {
+  if (!data.length) {
     return ID + 1;
   }
 
-  for(let i =0; i < data.length; i++) {
-    if(ID < data[i].id) {
+  for (let i = 0; i < data.length; i++) {
+    if (ID < data[i].id) {
       ID = data[i].id;
     }
   }
-  return ID + 1; 
-}
 
-const TaskModal = ({ closeModal}) => {
+  return ID + 1;
+};
 
-   // redux store
-   const {board} = useSelector(state => state.board);
-   // dispatch function
-
-   const dispatch = useDispatch()
+const TaskModal = ({ closeModal, addContext }) => {
+  console.log(addContext);
+  // redux store
+  const { board } = useSelector((state) => state.board);
+  const dispatch = useDispatch();
 
   const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const prevTasks = board[0].columns[0].tasks;
-
-
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const newTask = {id: CreateUID(prevTasks), title: task, description, duedate: selectedDate}
-    dispatch(addTask(newTask))
+    const prevTasks = board[0].columns[addContext.id].tasks;
+    const newTask = {
+      id: CreateUID(prevTasks),
+      title: task,
+      description,
+      duedate: selectedDate,
+      addContext
+    };
+    dispatch(addTask(newTask));
     closeModal(false);
-
-    alert("Task created successfully!");
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-[#abd6db] bg-opacity-30">
+    <div className="fixed inset-0 flex justify-center items-center bg-[#abd6db] bg-opacity-30 z-10">
       <div className="relative bg-white p-6 rounded-lg shadow-lg w-72 h-auto">
         <h1 className="text-2xl font-bold mb-3">Add New Task</h1>
         <button
@@ -87,11 +86,11 @@ const TaskModal = ({ closeModal}) => {
             <div className="w-full">
               <input
                 id="date"
-                type= "date"
+                type="date"
                 className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
                 selected={selectedDate}
                 onChange={(e) => {
-                  setSelectedDate(e.target.value)
+                  setSelectedDate(e.target.value);
                 }}
               />
             </div>
@@ -100,7 +99,6 @@ const TaskModal = ({ closeModal}) => {
             Create Task
           </button>
         </form>
-        
       </div>
     </div>
   );

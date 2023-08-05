@@ -28,7 +28,18 @@ const KanbanBody = () => {
   };
   console.log(board);
 
-  const handleOnDrag = (e) => {
+  const handleOnDrag = (e, id) => {
+    console.log(e, id)
+
+  }
+
+  const handleOnDrop = (e) => {
+    console.log(e)
+
+  }
+
+  const handleOnDragOver = (e) => {
+    e.preventDefault();
     console.log(e)
 
   }
@@ -49,12 +60,15 @@ const KanbanBody = () => {
 
               return (
                 <div key={name}>
-                  <h4 className="text-center border-b pb-3 mb-5 font-bold">
+                  <h4 className="text-center border-b pb-3 mb-5 font-bold border"
+                   onDragOver={handleOnDragOver} 
+                   onDrop={handleOnDrop}>
                     {name} ({tasks.length})
                   </h4>
 
                   {tasks.length ? (
-                    <div className="grid grid-cols-1 gap-3">
+                    <div className="flex flex-col gap-3 p-8 border rounded-md bg-slate-400 min-h-screen" 
+                    >
                       {tasks.map((task) => {
                         const { id, title, description, duedate, status } = task;
 

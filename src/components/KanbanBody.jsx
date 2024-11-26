@@ -1,9 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
-import { removeTask, transferTask } from "../redux/feature/boardSlice";
 import { PencilIcon, PlusIcon, X } from "lucide-react";
 import { useState } from "react";
-import TaskUpdateModal from "../modals/TaskUpdateModal";
+import { useDispatch, useSelector } from "react-redux";
 import TaskModal, { CreateUID } from "../modals/TaskModal";
+import TaskUpdateModal from "../modals/TaskUpdateModal";
+import { removeTask, transferTask } from "../redux/feature/boardSlice";
 
 const KanbanBody = () => {
   const { board } = useSelector((state) => state.board);
@@ -19,22 +19,19 @@ const KanbanBody = () => {
     setOpenAddModal(true);
   };
 
-  // erasing task from any list
   const RemoveTaskHandler = (id, index) => {
     const prevTasks = [...board[0].columns[index].tasks];
     const tasks = [...prevTasks.filter((task) => task.id !== id)];
     console.log(tasks);
     dispatch(removeTask({ tasks, index }));
   };
-  // updator of task information
   const UpdateTaskHandler = (id, index) => {
     setSelectedTask(id);
-    console.log(id, index)
+    console.log(id, index);
     setAddContext({ index });
     setIsOpenModal(true);
   };
 
-  // DND functionalities
   const handleOnDrag = (e, id, name, index) => {
     e.dataTransfer.setData(
       "data",
@@ -45,15 +42,11 @@ const KanbanBody = () => {
   const handleOnDrop = (e, toIndex) => {
     const { id, fromIndex } = JSON.parse(e.dataTransfer.getData("data"));
 
-    // return nothing when from and to equal
     if (fromIndex === toIndex) return;
 
-    // task: id utilize, from: where comes, to: where set
-
-    // finding targeted task
-    const targetedTask = {...board[0].columns[fromIndex].tasks.filter(
-      (task) => task.id === id
-    )[0]};
+    const targetedTask = {
+      ...board[0].columns[fromIndex].tasks.filter((task) => task.id === id)[0],
+    };
 
     console.log(typeof toIndex, typeof fromIndex, board[0].columns[fromIndex]);
     // finding from list from redux
@@ -104,18 +97,18 @@ const KanbanBody = () => {
         />
       ) : null}
       <h1 className="text-xl lg:text-3xl xl:text-5xl font-black my-10 text-center">
-        Kanban body
+        Task Body
       </h1>
       <hr />
       <div className="py-10 overflow-x-auto">
         {board.length ? (
-          <div className="grid grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
             {board[0].columns.map((column, index) => {
               const { name, tasks } = column;
               return (
                 <div
                   key={name}
-                  className="border mx-5 rounded-md"
+                  className="border rounded-md"
                   onDragOver={handleOnDragOver}
                   onDrop={(e) => handleOnDrop(e, index)}
                 >
@@ -153,11 +146,13 @@ const KanbanBody = () => {
                                 onClick={() => RemoveTaskHandler(id, index)}
                               />
                             </div>
-                            <span className="text-4xl font-black opacity-[20%] absolute top-0 left-0 -ml-[22px]">
+                            <span className="text-4xl font-black opacity-[20%] absolute top-0 -left-[7px] -ml-[22px]">
                               {id}
                             </span>
                             <h5 className="font-semibold">{title}</h5>
-                            <p className="text-gray-400">{description}</p>
+                            <p className="text-gray-400 break-all">
+                              {description}
+                            </p>
                             <p>Due: {duedate}</p>
                           </div>
                         );
